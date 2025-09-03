@@ -20,50 +20,67 @@ def AFD(estado, simboloNovo):
         estado = 'q2'
     return estado
 
-estado = 'q1'
-resultado = 'rejeitado'
-
+#Guardando todo o input do site para criar o automato
 automato = input()
-i=0
-todosEstados = None
-novaInformacao = None
-etapaDeCriacaoDaADF = ['CriandoEstados', 'EstadoInicial', 'EstadosDeAceitacao', 'CriandoAlfabeto', 'Transferencia']
-etapaAtualIndex = 0
-etapaAtual = etapaDeCriacaoDaADF[etapaAtualIndex]
-estados = None
 
-for estado in automato: 
+#criando os índex para as etapas de criação da ADF 
+estadosIndex=0
+etapaAtualIndex = 0
+estadosAceitacaoIndex=0
+alfabetoIndex = 0
+transferenciaIndexAlfabeto = 0
+transferenciaIndexEstados = 0
+transferenciaIndex = 0
+
+novaInformacao = None
+
+#criando todas etapas da ADF
+etapaDeCriacaoDaADF = ['CriandoEstados', 'EstadoInicial', 'EstadosDeAceitacao', 'CriandoAlfabeto', 'Transferencia']
+etapaAtual = etapaDeCriacaoDaADF[etapaAtualIndex]
+
+for letraNova in automato: 
 
     #adiciona uma letra na string novaInformacao até encontrar um espaço
-    if(estado != ' '):
-        if(novaInformacao == None):
-            novaInformacao = estado
-        else:
-            novaInformacao += estado
+    if(letraNova != ' '):
+        if(letraNova != '\n')
+            if(novaInformacao == None):
+                novaInformacao = letraNova
+            else:
+                novaInformacao += letraNova
         
         #quando encontrar um \n passa para a próxima etapa até finalizar todas etapas
-        if(estado == '\n' and etapaAtualIndex < len(etapaDeCriacaoDaADF)):
+        elif(etapaAtualIndex < len(etapaDeCriacaoDaADF)):
             etapaAtualIndex += 1
             etapaAtual = etapaDeCriacaoDaADF[etapaAtualIndex]
+        #ao finalizar todas etapas para criar a ADF verifica se os símbolos são aceitos ou rejeitados
+        elif(len(transferencia) >= len(estados)):
+            resultado = AFD(novaInformacao)
+
+    #adiciona a novaInformacao nas viriáveis dependendo da etapa atual
     else:
         if(etapaAtual == 'CriandoEstados'):
-            #ao encontrar um /n cria o estado inicial e passa para a próxima etapa dos estados de aceitação
-            if(estado != '\n'):
-                estados[i] = novaInformacao
-                i += 1
-            else:
-                estadoInicial = novaInformacao
+            #guarda os estados aumentando o index até passar para a próxima etapa
+            estados[estadosIndex] = novaInformacao
+            estadosIndex += 1
 
         elif(etapaAtual == 'EstadoInicial'):
-            #enquanto não encontrar um /n vai adicionando os estados de aceitação
-            #ao encontrar um /n passa para a próxima etapa de criar o alfabeto
+            #guarda o estado inicial
             estadoInicial = novaInformacao
 
         elif(etapaAtual == 'EstadosDeAceitacao'):
-            #enquanto não encontrar um /n vai adicionando os estados de aceitação
-            #ao encontrar um /n passa para a próxima etapa de criar o alfabeto
-            if(estado != '\n'):
-                estados[i] = novaInformacao
-                i += 1
-            else:
-                estadoInicial = novaInformacao
+            #guarda estados de aceitação aumentando o index até passar para a próxima etapa
+            estadosAceitacao[estadosAceitacaoIndex] = novaInformacao
+            estadosAceitacaoIndex += 1
+
+        elif(etapaAtual == 'CriandoAlfabeto'):
+            #guarda o alfabeto aumentando o index até passar para a próxima etapa
+            alfabeto[alfabetoIndex] = novaInformacao
+            alfabetoIndex += 1
+        
+        #transferencia
+        else:
+            if(transferenciaIndexAlfabeto < alfabetoIndex):
+                transferencia[transferenciaIndexEstados][transferenciaIndexAlfabeto] = novaInformacao
+                transferenciaIndexAlfabeto += 1
+            elif(transferenciaIndexEstados < estadosIndex):
+                transferenciaIndexEstados += 1
