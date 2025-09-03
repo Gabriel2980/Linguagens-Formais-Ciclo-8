@@ -1,46 +1,33 @@
 import math
 
 def AFD(estado, simboloNovo):
-    if(simboloNovo != 0 and simboloNovo != 1):
-        print("Fora do alfabeto")
-        return estado
-    match estado:
-        case 'q1':
-            if(simboloNovo == 0):
-                estado = 'q1'
-            else:
-                estado = 'q2'
-        case 'q2':
-            if(simboloNovo == 0):
-                estado = 'q3'
-            else:
-                estado = 'q2'
-        case 'q3':
+    if(estado == 'q1'):
+        if(simboloNovo == '0'):
+            estado = 'q1'
+        else:
             estado = 'q2'
+    elif(estado == 'q2'):
+        if(simboloNovo == '0'):
+            estado = 'q3'
+        else:
+            estado = 'q2'
+    elif(estado == 'q3'):
+        estado = 'q2'
     return estado
 
-def adicionarSimbolo(palavra, simboloNovo):
-    if(simboloNovo != 0 and simboloNovo != 1):
-        return palavra
-    elif (palavra == None):
-        palavra = str(simboloNovo)
-    else:
-        palavra = palavra + str(simboloNovo)
-    return palavra
-
 estado = 'q1'
-palavra = None
 resultado = 'rejeitado'
-while True:
-    simboloNovo = input("Digite o novo simbolo inserido 0/1 ou 2 para finalizar o código: ")
-    simboloNovo = int(simboloNovo)
-    if(simboloNovo == 2):
-        print("Palavra final: %s, %s" %(palavra, resultado))
-        break
+
+palavra = input()
+i=0
+for simboloNovo in palavra: 
     estado = AFD(estado, simboloNovo)
-    palavra = adicionarSimbolo(palavra, simboloNovo)
     if(estado == 'q2'):
-        resultado = 'aceito'
+        resultado = 'aceita'
     else:
-        resultado = 'rejeitado'
-    print("Estado: %s, %s\n Palavra: %s" %(estado, resultado, palavra))
+        resultado = 'rejeita'
+    if(simboloNovo == ' ' or i == len(palavra)-1):
+        print(resultado)
+        estado = 'q1'
+
+    i += 1
