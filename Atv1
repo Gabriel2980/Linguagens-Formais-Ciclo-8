@@ -20,7 +20,9 @@ def AFD(estado, simboloNovo):
     return estado
 
 def adicionarSimbolo(palavra, simboloNovo):
-    if (palavra == None):
+    if(simboloNovo != 0 and simboloNovo != 1):
+        return palavra
+    elif (palavra == None):
         palavra = str(simboloNovo)
     else:
         palavra = palavra + str(simboloNovo)
