@@ -7,26 +7,37 @@ def criarADF(estados):
         estadosPossiveis = []
         estadosFuturos = 0
         estadosPossiveis.append(estados[2][0])
-        copiaEstadosPossiveis = estadosPossiveis
-        for estadoAtual in copiaEstadosPossiveis:
-            print(copiaEstadosPossiveis)
-            for simbolo in simboloNovo:
-                print(simbolo)
+        for simbolo in simboloNovo:
+            copiaEstadosPossiveis = estadosPossiveis
+            for estadoAtual in copiaEstadosPossiveis:
+                print("Estado autal:", estadoAtual)
+                print("Simbolo:", simbolo)
+
                 for i in range(len(estados[0])):
+                    print("Estado Teste i:", estados[0][i])
                     if(estados[0][i] == estadoAtual):
                         break
-                for j in range(len(estados[3])):
+                for j in range(len(estados[1])):
+                    print("Estado Teste j:", estados[1][j])
                     if(estados[1][j] == simbolo):
                         break
+                print("i: %d J: %d" %(i, j))
+                
                 for verificar in estados[i+4][j+1]:
                     if(verificar == ','):
                         estadosFuturos += 1
                 print(estadosFuturos)
-                time.sleep(0.5)
+                time.sleep(3)
                 for todosCasos in range(estadosFuturos+1):
                     if(estados[i+4][j+1] != 'vazio'):
+                        print(estados[i+4][j+1])
+                        print(i)
+                        print(j)
                         estadosPossiveis.append(estados[i+4][j+1][todosCasos*3:2+todosCasos*3])
-            estadosPossiveis.pop(0)
+                print(estadosPossiveis)
+                estadosPossiveis.pop(0)
+                print(estadosPossiveis)
+
             time.sleep(3)
         print("Aqui")
         resultado = 'rejeita'
