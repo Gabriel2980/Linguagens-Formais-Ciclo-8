@@ -27,7 +27,6 @@ def adicionarEstado(novaInformacao, etapaAtualIndex):
 
 #criando os índex para as etapas de criação da ADF 
 etapaAtualIndex = 0
-transferenciaIndex = 0
 
 novaInformacao = None
 
