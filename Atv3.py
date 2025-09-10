@@ -63,4 +63,3 @@ ADF = criarADF(estadosADF)
 for verificacao in range(len(estadosADF[-1])): 
         resultado = ADF(estadosADF[-1][verificacao])
         print(resultado)
-        novaInformacao = None
