@@ -1,20 +1,18 @@
 #Testa se mais estados devem entrar junto do estado novo
 def entrandoEmEstado(estados, estados_lista, estadosPossiveis):
 
-    estadosExtras = 0
-    adicionarEstadosExtras = []
+    estadosPossiveis.append(estados_lista)
+    estados_lista_Extras = []
     if(estados[4+int(estados_lista[-1])-int(estados[4][0][-1])][-1] != 'vazio'):
-                        estadosExtras += 1
-                        adicionarEstadosExtras.append(int(estados_lista[-1]))
-    for todosCasos in range(estadosExtras):  
-        estadosPossiveis.append(estados[4+int(estados_lista[-1])-int(estados[4][0][-1])][-1][todosCasos*3:2+todosCasos*3])
+                        estados_lista_Extras = estados[4+int(estados_lista[-1])-int(estados[4][0][-1])][-1].split(',')
+    for todosCasos in range(len(estados_lista_Extras)):  
+        estadosPossiveis.append(estados_lista_Extras[todosCasos])
     
     return estadosPossiveis
 
 #cria a ADF
 def ADF(simboloNovo, estados):
     estadosPossiveis = []
-    estadosPossiveis.append(estados[2][0])
     estadosPossiveis = entrandoEmEstado(estados, estados[2][0], estadosPossiveis)
     #Verifica todos os simbolos da palavra
     for simbolo in simboloNovo:
@@ -24,7 +22,7 @@ def ADF(simboloNovo, estados):
         print(simbolo)
         #verifica os simbolos em cada estado possível
         for estadoAtual in copiaEstadosPossiveis:
-            estadosFuturos = 0
+            
             #encontra o index do estado atual e do simbolo atual
             for i in range(len(estados[0])):
                 if(estados[0][i] == estadoAtual):
@@ -33,14 +31,11 @@ def ADF(simboloNovo, estados):
                 if(estados[1][j] == simbolo):
                     break
             #verifica se existem mais de 1 estado possível
-            for verificar in estados[i+4][j+1]:
-                if(verificar == ','):
-                    estadosFuturos += 1
+            estados_lista = estados[i+4][j+1].split(',')
+
             #adiciona todos estados na lista de estadosPossiveis        
-            for todosCasos in range(estadosFuturos+1):
+            for todosCasos in range(len(estados_lista)):
                 if(estados[i+4][j+1] != 'vazio'):
-                    estados_lista = estados[i+4][j+1].split(',')
-                    estadosPossiveis.append(estados_lista[todosCasos])
                     estadosPossiveis = entrandoEmEstado(estados, estados_lista[todosCasos], estadosPossiveis)
             #remove o estado que foi estudado e atualizado
             estadosPossiveis.pop(0)
@@ -71,6 +66,7 @@ estadosADF = []
 #criando todas etapas da ADF
 etapaDeCriacaoDaADF = ['CriandoEstados', 'CriandoAlfabeto', 'EstadoInicial', 'EstadosDeAceitacao', 'Transferencia']
 
+#realiza o loop para criar a ADF pela quantidade de etapaDeCriacaoDaADF, mais a quantidade de estados para a transferência
 while(etapaAtualIndex <= len(etapaDeCriacaoDaADF)-1+(len(estadosADF[0]) if len(estadosADF) > 0 else 0)):
     #Guardando todo o input do site para criar o automato  
     automato = input()
@@ -82,13 +78,13 @@ while(etapaAtualIndex <= len(etapaDeCriacaoDaADF)-1+(len(estadosADF[0]) if len(e
                 novaInformacao = letraNova
             else:
                 novaInformacao += letraNova
-        #adiciona a novaInformacao nas viriáveis dependendo da etapa atual
+        #adiciona a novaInformacao nas variáveis dependendo da etapa atual
         else:
             estadosADF= adicionarEstado(novaInformacao, etapaAtualIndex)
             novaInformacao = None
 
             
-    #quando encontrar um \n passa para a próxima etapa até a transferência
+    #quando encontrar um \n passa para a próxima etapa
     estadosADF = adicionarEstado(novaInformacao, etapaAtualIndex)
     novaInformacao = None
     etapaAtualIndex += 1
